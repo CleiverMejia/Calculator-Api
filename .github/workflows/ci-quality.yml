@@ -1,4 +1,4 @@
-name: ci
+name: ci-quality
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        run: npm run test -- --coverage
+        run: npm run test
 
       - name: check coverage
         uses: VeryGoodOpenSource/very_good_coverage@v2
