@@ -3,6 +3,11 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
   roots: ["<rootDir>/src/modules/operation/test"],
+
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  coverageReporters: ["lcov", "text"],
+
   reporters: [
     "default",
     [
@@ -15,5 +20,4 @@ module.exports = {
       },
     ],
   ],
-  coverageReporters: ["lcov", "text"],
 };

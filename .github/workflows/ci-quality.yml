@@ -7,37 +7,28 @@ on:
     branches: ["main"]
 
 jobs:
-  Lint:
+  linter:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-      # To report GitHub Actions status checks
-      statuses: write
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          # super-linter needs the full git history to get the
-          # list of files that changed across commits
-          fetch-depth: 0
-          persist-credentials: false
+        uses: actions/checkout@v4
 
-      - name: Super-linter
-        uses: super-linter/super-linter@v8.2.0 # x-release-please-version
-        env:
-          # To report GitHub Actions status checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BRANCH: main
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_JAVASCRIPT_ES: true
-          VALIDATE_TYPESCRIPT_ES: true
-          VALIDATE_PRETTIER: false
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run lint
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: dist
 
   test:
     runs-on: ubuntu-latest
-    needs: Lint
+    needs: linter
     if: ${{ success() }}
 
     steps:
